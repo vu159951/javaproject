@@ -83,15 +83,15 @@ Middle age	46-60
 Senior	>60
 ```
 ### Grading table
-| Item |                              Definition                              | Grade |
-|------|----------------------------------------------------------------------|-------|
-|    1 | Reading ‘Clean Code’ book (2 random questions)                       |    15 |
-|    2 | Applying KMS Java Coding Standards                                   |    10 |
-|    3 | Descriptive names, comments                                          |    10 |
-|    4 | Error handlings                                                      |    10 |
-|    5 | Unit-testing                                                         |    20 |
-|    6 | Can fix the percentage bug                                           |    5  |
-|    7 | Applying OO Principles (SOLID, DRY…), Design Patterns                |    15 |
-|    8 | Java techniques (Reflection, Annotation, Java 8 Stream API, Lambda…) |    15 |
-|    9 | Performance Improvement (bonus)                                      |    10 |
-|      | Total Score                                                          |   110 |
+| Item |                              Definition                              | Grade | Note                         |
+|------|----------------------------------------------------------------------|-------|------------------------------|
+|    1 | Reading ‘Clean Code’ book (2 random questions)                       |    15 |                              |
+|    2 | Applying KMS Java Coding Standards                                   |    10 |                              |
+|    3 | Descriptive names, comments                                          |    10 |                              |
+|    4 | Error handlings                                                      |    10 |                              |
+|    5 | Unit-testing  (80% coverage)                                         |    20 |(-10 if there is no unit test)|
+|    6 | Can fix the percentage bug                                           |    5  |                              |
+|    7 | Applying OO Principles (SOLID, DRY…), Design Patterns                |    15 |                              |
+|    8 | Java techniques (Reflection, Annotation, Java 8 Stream API, Lambda…) |    15 |                              |
+|    9 | Performance Improvement (bonus)                                      |    10 |                              |
+|      | Total Score                                                          |   110 |                              |
