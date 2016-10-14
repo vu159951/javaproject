@@ -4,6 +4,9 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,8 +16,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Application {
     private static final Set<String> VALID_STATE_CODES = new HashSet<>(
@@ -30,7 +36,7 @@ public class Application {
     };
 
     public static void main(String[] args) throws Exception {
-        Map<String, Integer> field_error_counts = new HashMap<>();
+        /*Map<String, Integer> field_error_counts = new HashMap<>();
         Map reports = loadFileAndConvertToEntityAndValidateEntityAndStoreEntityAndReturnReports(field_error_counts);
 
         // 5. Store reports
@@ -57,7 +63,9 @@ public class Application {
             }
             writer.flush();
             System.out.println("Generated report " + "etc/" + reportName + ".tab");
-        }
+        }*/
+        
+        System.out.println(checkDate("01/00/1900"));
     }
 
     /**
@@ -65,22 +73,32 @@ public class Application {
      *         invalid-entities, total-errors
      */
     private static Map loadFileAndConvertToEntityAndValidateEntityAndStoreEntityAndReturnReports(Map<String, Integer> counts) throws Exception {
-        // 1. Load data from file
-        InputStream is = new FileInputStream("etc/contacts.tab");
-        char[] buff = new char[100000]; // guest file size is not greater than
-                                        // 100000 chars
-        int b; // read one character
-        int c = 0; // count total characters in file
-        while ((b = is.read()) != -1) {
-            buff[c] = (char) b;
-            c++;
-        }
+        // 1. Load data from file using Stream API 
+//        InputStream is = new FileInputStream("etc/contacts.tab");
+//        char[] buff = new char[100000]; // guest file size is not greater than
+//                                        // 100000 chars
+//        int b; // read one character
+//        int c = 0; // count total characters in file
+//        while ((b = is.read()) != -1) {
+//            buff[c] = (char) b;
+//            c++;
+//        }
 
-        String s = new String(buff, 0, c); // all data from file load to string
+//        String s = new String(buff, 0, c); // all data from file load to string
+        List<String> lines;
+        try ( Stream<String> stream = Files.lines(Paths.get("etc/big-contacts.tab"))) {
+            lines = stream.collect(Collectors.toList());
+            
+        }
+       
+        
+        
+        
+        
                                            // s
-        String[] lines = s.split("\r"); // get all lines
+        //String[] lines = s.split("\r"); // get all lines
         List<Contact> allContacts = new ArrayList<>();
-        for (int i = 0; i < lines.length; i++) {
+        for (int i = 0; i < lines.size(); i++) {
             // debug
             // System.out.println(lines[i]);
 
@@ -90,11 +108,11 @@ public class Application {
 
             // count blank line by trimming space characters and then check
             // length
-            if (lines[i].trim().length() == 0) {
+            if (lines.get(i).trim().length() == 0) {
                 continue;
             }
 
-            String[] data = lines[i].split("\t"); // get data of a line
+            String[] data = lines.get(i).split("\t"); // get data of a line
 
             if (data.length != 14) { // invalid line format
                 continue;
@@ -157,7 +175,8 @@ public class Application {
                 errors.put("lastName", "'" + contact.getLastName() + "''s length is over 10");
                 add_FieldERROR(counts, "lastName");
             }
-            if (contact.getDateOfBirth() == null || contact.getDateOfBirth().trim().length() != 10) {
+            if (contact.getDateOfBirth() == null || contact.getDateOfBirth().trim().length() != 10 || !checkDate(contact.getDateOfBirth())) {
+                
                 errors.put("day_of_birth", "'" + contact.getDateOfBirth() + "' is invalid");
                 add_FieldERROR(counts, "day_of_birth");
             }
@@ -189,6 +208,7 @@ public class Application {
             if (!errors.isEmpty()) {
                 invalidContacts.put(contact.getId(), errors);
             } else { // populate other fields from raw fields
+                System.out.println(contact.getDateOfBirth());
                 contact.setAge(preciseCalculateAgeByYear(contact.getDateOfBirth())); // age
             }
         }
@@ -263,6 +283,7 @@ public class Application {
      * @return
      */
     public static int preciseCalculateAgeByYear(String dateOfBirth) {
+        
         long age = ChronoUnit.YEARS.between(LocalDate.parse(dateOfBirth,
                DateTimeFormatter.ofPattern("MM/dd/yyyy")), LocalDate.now());
 
@@ -281,6 +302,17 @@ public class Application {
         } else {
 
             return "Senior";
+        }
+    }
+    
+    public static boolean checkDate(String date) {
+        SimpleDateFormat df = new SimpleDateFormat("mm/dd/yyyy", Locale.FRENCH);
+        try {
+            df.setLenient(false);
+            df.parse(date);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }
