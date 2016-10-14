@@ -2,16 +2,16 @@ package vn.kms.launch.codequaility;
 
 public class Contact {
     private int id; // ID
-    private String first_name;
-    private String lsName; // Last Name
+    private String firstName;
+    private String lastName;
     private String address;
     private String city;
-    private String STATE;
-    private String z_Code; // zip Code
-    private String mobile_Phone;
+    private String state;
+    private String zipCode;
+    private String mobilePhone;
     private String email;
     private int age;
-    public String day_of_birth;
+    private String dateOfBirth;
 
     public int getId() {
         return id;
@@ -21,20 +21,20 @@ public class Contact {
         this.id = id;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLsName() {
-        return lsName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLsName(String lsName) {
-        this.lsName = lsName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getAddress() {
@@ -53,28 +53,28 @@ public class Contact {
         this.city = city;
     }
 
-    public String getSTATE() {
-        return STATE;
+    public String getState() {
+        return state;
     }
 
-    public void setSTATE(String STATE) {
-        this.STATE = STATE;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public String getZ_Code() {
-        return z_Code;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setZ_Code(String z_Code) {
-        this.z_Code = z_Code;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
-    public String getMobile_Phone() {
-        return mobile_Phone;
+    public String getMobilePhone() {
+        return mobilePhone;
     }
 
-    public void setMobile_Phone(String mobile_Phone) {
-        this.mobile_Phone = mobile_Phone;
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
     }
 
     public String getEmail() {
@@ -85,16 +85,24 @@ public class Contact {
         this.email = email;
     }
 
-    public String toLine() {
-        return String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", id, first_name, lsName, day_of_birth, address, city, STATE, z_Code,
-                mobile_Phone, email);
-    }
-
     public int getAge() {
         return age;
     }
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String toLine() {
+        return String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s", id, firstName, lastName, dateOfBirth, address, city, state, zipCode,
+                mobilePhone, email);
     }
 }

@@ -112,14 +112,14 @@ public class Application {
             }
 
             // FIXME: need to change this code if the order of column is change
-            contact.setFirst_name(data[1]); // first_name
-            contact.setLsName(data[2]); // last_name
-            contact.day_of_birth = data[4]; // day_of_birth
+            contact.setFirstName(data[1]); // first_name
+            contact.setLastName(data[2]); // last_name
+            contact.setDateOfBirth(data[4]); // day_of_birth
             contact.setAddress(data[5]); // city
             contact.setCity(data[6]); // city
-            contact.setSTATE(data[8]); // state
-            contact.setZ_Code(data[9]); // zip
-            contact.setMobile_Phone(data[10]); // phone1
+            contact.setState(data[8]); // state
+            contact.setZipCode(data[9]); // zip
+            contact.setMobilePhone(data[10]); // phone1
             contact.setEmail(data[12]); // email
 
             if (contact != null) {
@@ -137,24 +137,24 @@ public class Application {
         Map<Integer, Map<String, String>> invalidContacts = new HashMap<>();
         for (Contact contact : allContacts) {
             Map<String, String> errors = new HashMap<>();
-            if (contact.getFirst_name().trim().length() == 0) {
+            if (contact.getFirstName().trim().length() == 0) {
                 errors.put("firstName", "is empty");
                 add_FieldERROR(counts, "firstName");
             }
-            if (contact.getFirst_name().length() > 10) {
-                errors.put("firstName", "'" + contact.getFirst_name() + "''s length is over 10");
+            if (contact.getFirstName().length() > 10) {
+                errors.put("firstName", "'" + contact.getFirstName() + "''s length is over 10");
                 add_FieldERROR(counts, "firstName");
             }
-            if (contact.getLsName().trim().length() == 0) {
+            if (contact.getLastName().trim().length() == 0) {
                 errors.put("lastName", "is empty");
                 add_FieldERROR(counts, "lastName");
             }
-            if (contact.getLsName().length() > 10) {
-                errors.put("lastName", "'" + contact.getLsName() + "''s length is over 10");
+            if (contact.getLastName().length() > 10) {
+                errors.put("lastName", "'" + contact.getLastName() + "''s length is over 10");
                 add_FieldERROR(counts, "lastName");
             }
-            if (contact.day_of_birth == null || contact.day_of_birth.trim().length() != 10) {
-                errors.put("day_of_birth", "'" + contact.day_of_birth + "' is invalid");
+            if (contact.getDateOfBirth() == null || contact.getDateOfBirth().trim().length() != 10) {
+                errors.put("day_of_birth", "'" + contact.getDateOfBirth() + "' is invalid");
                 add_FieldERROR(counts, "day_of_birth");
             }
             if (contact.getAddress().length() > 20) {
@@ -165,16 +165,16 @@ public class Application {
                 errors.put("city", "'" + contact.getCity() + "''s length is over 15");
                 add_FieldERROR(counts, "city");
             }
-            if (!VALID_STATE_CODES.contains(contact.getSTATE())) {
-                errors.put("state", "'" + contact.getSTATE() + "' is incorrect state code");
+            if (!VALID_STATE_CODES.contains(contact.getState())) {
+                errors.put("state", "'" + contact.getState() + "' is incorrect state code");
                 add_FieldERROR(counts, "state");
             }
-            if (!contact.getZ_Code().matches("^\\d{4,5}$")) {
-                errors.put("zipCode", "'" + contact.getZ_Code() + "' is not four or five digits");
+            if (!contact.getZipCode().matches("^\\d{4,5}$")) {
+                errors.put("zipCode", "'" + contact.getZipCode() + "' is not four or five digits");
                 add_FieldERROR(counts, "zipCode");
             }
-            if (!contact.getMobile_Phone().matches("^\\d{3}\\-\\d{3}\\-\\d{4}$")) {
-                errors.put("mobilePhone", "'" + contact.getMobile_Phone() + "' is invalid format XXX-XXX-XXXX");
+            if (!contact.getMobilePhone().matches("^\\d{3}\\-\\d{3}\\-\\d{4}$")) {
+                errors.put("mobilePhone", "'" + contact.getMobilePhone() + "' is invalid format XXX-XXX-XXXX");
                 add_FieldERROR(counts, "mobilePhone");
             }
             if (!contact.getEmail().matches("^.+@.+\\..+$")) {
@@ -185,7 +185,7 @@ public class Application {
             if (!errors.isEmpty()) {
                 invalidContacts.put(contact.getId(), errors);
             } else { // populate other fields from raw fields
-                contact.setAge(calculate_age_by_year(contact.day_of_birth)); // age
+                contact.setAge(calculate_age_by_year(contact.getDateOfBirth())); // age
             }
         }
 
@@ -196,8 +196,8 @@ public class Application {
                 Contact contact_a = allContacts.get(i);
                 Contact contact_b = allContacts.get(j);
                 if (!invalidContacts.containsKey(contact_a.getId()) && !invalidContacts.containsKey(contact_b.getId())) {
-                    int zip_a = Integer.parseInt(contact_a.getZ_Code());
-                    int zip_b = Integer.parseInt(contact_b.getZ_Code());
+                    int zip_a = Integer.parseInt(contact_a.getZipCode());
+                    int zip_b = Integer.parseInt(contact_b.getZipCode());
                     if (zip_a > zip_b) {
                         allContacts.set(i, contact_b);
                         allContacts.set(j, contact_a);
@@ -224,10 +224,10 @@ public class Application {
         for (Contact contact : allContacts) {
             if (!invalidContacts.containsKey(contact.getId())) {
                 int state_count = 0;
-                if (r_contact_per_state.containsKey(contact.getSTATE())) {
-                    state_count = r_contact_per_state.get(contact.getSTATE());
+                if (r_contact_per_state.containsKey(contact.getState())) {
+                    state_count = r_contact_per_state.get(contact.getState());
                 }
-                r_contact_per_state.put(contact.getSTATE(), state_count + 1);
+                r_contact_per_state.put(contact.getState(), state_count + 1);
 
                 int age_group_count = 0;
                 if (r_contact_per_age_group.containsKey(calculate_age_group(contact.getAge()))) {
