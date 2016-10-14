@@ -189,7 +189,7 @@ public class Application {
             if (!errors.isEmpty()) {
                 invalidContacts.put(contact.getId(), errors);
             } else { // populate other fields from raw fields
-                contact.setAge(calculate_age_by_year(contact.getDateOfBirth())); // age
+                contact.setAge(preciseCalculateAgeByYear(contact.getDateOfBirth())); // age
             }
         }
 
@@ -262,18 +262,11 @@ public class Application {
      * @param dateOfBirth
      * @return
      */
-    public static int calculate_age_by_year(String dateOfBirth) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        LocalDate date = LocalDate.parse(dateOfBirth, formatter);
-        LocalDate today = LocalDate.now();
-        long age = ChronoUnit.YEARS.between(date, today);
+    public static int preciseCalculateAgeByYear(String dateOfBirth) {
+        long age = ChronoUnit.YEARS.between(LocalDate.parse(dateOfBirth,
+               DateTimeFormatter.ofPattern("MM/dd/yyyy")), LocalDate.now());
 
         return (int) age;
-    }
-
-    // TODO: Calculate age exactly by month/day/year.
-    public static int precise_calculate_age(String date_of_birth) {
-        return 10;
     }
 
     private static String calculate_age_group(int age) {
