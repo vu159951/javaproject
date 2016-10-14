@@ -4,6 +4,10 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.Writer;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -255,14 +259,16 @@ public class Application {
     /**
      * Calculate the age of contact by year. It's not accurate but acceptable
      * 
-     * @param date_of_birth
+     * @param dateOfBirth
      * @return
      */
-    public static int calculate_age_by_year(String date_of_birth) {
-        String yearStr = date_of_birth.split("/")[2];
-        int year = Integer.parseInt(yearStr);
+    public static int calculate_age_by_year(String dateOfBirth) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(dateOfBirth, formatter);
+        LocalDate today = LocalDate.now();
+        long age = ChronoUnit.YEARS.between(date, today);
 
-        return YEAR_OF_REPORT - year;
+        return (int) age;
     }
 
     // TODO: Calculate age exactly by month/day/year.
